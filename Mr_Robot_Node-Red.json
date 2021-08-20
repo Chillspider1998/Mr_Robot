@@ -1,0 +1,247 @@
+[
+    {
+        "id": "3580c0b5.0bd3f",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "dd0e002f.dd2b6",
+        "type": "wiotp-credentials",
+        "name": "",
+        "org": "gabriel",
+        "serverName": "Quickstart",
+        "devType": "device",
+        "devId": "f7e815f3.e6c4f8",
+        "keepalive": "60",
+        "cleansession": true,
+        "tls": "",
+        "usetls": false
+    },
+    {
+        "id": "130ac018.f8243",
+        "type": "telegram bot",
+        "botname": "BotsonJr_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "0",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "89b57abb.8fe858",
+        "type": "telegram bot",
+        "botname": "BotsonJr_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "0",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "9a2a6fe9.ad297",
+        "type": "Cache",
+        "name": "abcd",
+        "defaultTtl": "10",
+        "checkPeriod": "30"
+    },
+    {
+        "id": "5485c65d.c921c8",
+        "type": "telegram bot",
+        "botname": "BotsonJr_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "pollinterval": "",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "",
+        "socksusername": "",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "",
+        "publicbotport": "",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "641a3ec0.c4845",
+        "type": "mongodb",
+        "hostname": "127.0.0.1",
+        "port": "27017",
+        "db": "Teste_Mini_Clara",
+        "name": ""
+    },
+    {
+        "id": "e26d8a27.76e928",
+        "type": "mongodb3",
+        "uri": "mongodb://localhost:27017/mini_clara",
+        "name": "mini_clara",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "2222bafb.872c86",
+        "type": "telegram receiver",
+        "z": "3580c0b5.0bd3f",
+        "name": "",
+        "bot": "5485c65d.c921c8",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 230,
+        "y": 160,
+        "wires": [
+            [
+                "3e0a95af.e5f08a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3e0a95af.e5f08a",
+        "type": "function",
+        "z": "3580c0b5.0bd3f",
+        "name": "Save context",
+        "func": "context.flow.chatId = msg.payload.chatId;\ncontext.flow.type = msg.payload.type;\nmsg.payload = msg.payload.content;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 417.5,
+        "y": 153.75,
+        "wires": [
+            [
+                "24ebd36b.04d1e4"
+            ]
+        ]
+    },
+    {
+        "id": "24ebd36b.04d1e4",
+        "type": "watson-conversation-v1",
+        "z": "3580c0b5.0bd3f",
+        "name": "",
+        "workspaceid": "e5b414bd-53b6-4fbf-aca4-a005cf1af664",
+        "multiuser": false,
+        "context": true,
+        "empty-payload": false,
+        "service-endpoint": "https://api.us-south.assistant.watson.cloud.ibm.com/instances/6acdad9d-8559-40f2-adea-34d08a9b32d7",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 590.625,
+        "y": 154,
+        "wires": [
+            [
+                "3c133c0c.807744"
+            ]
+        ]
+    },
+    {
+        "id": "3c133c0c.807744",
+        "type": "function",
+        "z": "3580c0b5.0bd3f",
+        "name": "Restore context",
+        "func": "msg.payload.chatId = context.flow.chatId;\nmsg.payload.type = context.flow.type;\nmsg.payload.content = msg.payload.output.text[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 774,
+        "y": 153.9375,
+        "wires": [
+            [
+                "bf4a1e56.e282c"
+            ]
+        ]
+    },
+    {
+        "id": "bf4a1e56.e282c",
+        "type": "telegram sender",
+        "z": "3580c0b5.0bd3f",
+        "name": "",
+        "bot": "5485c65d.c921c8",
+        "outputs": 1,
+        "x": 975.75,
+        "y": 153,
+        "wires": [
+            [
+                "87908cdb.45e6c",
+                "6e4d6736.5a6348"
+            ]
+        ]
+    },
+    {
+        "id": "c61665b5.dc1d8",
+        "type": "comment",
+        "z": "3580c0b5.0bd3f",
+        "name": "Read.me",
+        "info": "1) Create a Watson Conversation on IBM Cloud (https://www.bluemix.net)\n2) Create a Telegram Bot:\n   Open web.telegram.org\n   find BotFather (contact)\n   send /newbot\n   Give a name for your bot (Botfather will ask it)\n   Give a user name for it, which should have in the end \"Bot\"\n   The BotFather will give you a token.\n   ",
+        "x": 212.5,
+        "y": 114.68746948242188,
+        "wires": []
+    },
+    {
+        "id": "6e4d6736.5a6348",
+        "type": "mongodb3 in",
+        "z": "3580c0b5.0bd3f",
+        "service": "_ext_",
+        "configNode": "e26d8a27.76e928",
+        "name": "salva_mensagens",
+        "collection": "mensagens",
+        "operation": "insert",
+        "x": 1170,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "87908cdb.45e6c",
+        "type": "debug",
+        "z": "3580c0b5.0bd3f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 200,
+        "wires": []
+    }
+]
